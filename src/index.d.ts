@@ -57,6 +57,23 @@ declare namespace SDKStandardComponents {
         extensionList?: TExtensionList
     }
 
+    type TCredential = {
+        id: string | null;
+        credentialType: 'FIDO';
+        // TODO: Double check if enum is ACTIVE or VERIFIED.
+        status: 'PENDING' | 'ACTIVE';
+        challenge: {
+            payload: ArrayBuffer;
+            signature: ArrayBuffer | null;
+        },
+        payload: ArrayBuffer | null;
+    }
+
+    type  TCrendentialScope = {
+        scope: string;
+        accountId: string;
+    }
+
     // Ref: https://github.com/mojaloop/api-snippets/blob/master/v1.0/openapi3/schemas/AmountType.yaml
     enum TAmountType {
         SEND = 'SEND',
@@ -91,16 +108,38 @@ declare namespace SDKStandardComponents {
             accountId: string;
             actions: Array<string>;
         }>;
-        credential: {
-            id: string | null;
-            credentialType: 'FIDO';
-            status: 'PENDING' | 'VERIFIED';
-            challenge: {
-                payload: ArrayBuffer;
-                signature: ArrayBuffer | null;
-            },
-            payload: ArrayBuffer | null;
-        }
+        credential: TCredential;
+    }
+
+    type PostConsentsRequest = {
+        id: string;
+        requestId: string;
+        initiatorId: string;
+        participantId: string;
+        // TODO: Double check finalized scope structure.
+        scopes: TCrendentialScope[];
+        credential: TCredential;
+    }
+
+    type PutConsentRequestsRequest = {
+        initiatorId: string;
+        accountIds: string[];
+        authChannels: string[];
+        // TODO: Double check finalized scope structure.
+        scopes: string[];
+        callbackUri: string;
+        authorizationUri: string;
+        authToken: string;
+    }
+
+    type PostConsentRequestsRequest = {
+        id: string;
+        initiatorId: string;
+        accountIds: string[];
+        authChannels: string[];
+        // TODO: Double check finalized scope structure.
+        scopes: string[];
+        callbackUri: string;
     }
 
     type PostAuthorizationsRequest = {
@@ -146,6 +185,32 @@ declare namespace SDKStandardComponents {
          * @param {string} destParticipantId The id of the destination participant
          */
         putConsents(consentId: string, consentBody: PutConsentsRequest, destParticipantId: string): Promise<GenericRequestResponse | MojaloopRequestResponse>;
+
+        /**
+         * @function postConsents
+         * @description Executes a `POST /consents` request.
+         * @param {PostConsentsRequest} consentBody The body of the consent object
+         * @param {string} destParticipantId The id of the destination participant
+         */
+        postConsents(consentBody: PostConsentsRequest, destParticipantId: string): Promise<GenericRequestResponse | MojaloopRequestResponse>;
+
+        /**
+         * @function putConsentRequests
+         * @description Executes a `PUT /consentRequests/{id}` request.
+         * @param {string} consentRequestId The `id` of the consent requests object to be updated
+         * @param {PutConsentRequestsRequest} consentRequestBody The body of the consent requests object
+         * @param {string} destParticipantId The id of the destination participant
+         */
+        putConsentRequests(consentRequestId: string, consentRequestBody: PutConsentRequestsRequest, destParticipantId: string): Promise<GenericRequestResponse | MojaloopRequestResponse>;
+
+        /**
+         * @function postConsentRequests
+         * @description Executes a `POST /consentRequests` request.
+         * @param {PostConsentRequestsRequest} consentRequestBody The body of the consent requests object
+         * @param {string} destParticipantId The id of the destination participant
+         */
+        postConsentRequests(consentRequestBody: PostConsentRequestsRequest, destParticipantId: string): Promise<GenericRequestResponse | MojaloopRequestResponse>;
+
 
         /**
          * @function postAuthorizations
