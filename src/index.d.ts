@@ -4,8 +4,6 @@ declare namespace SDKStandardComponents {
     // Ref: https://github.com/mojaloop/api-snippets/blob/master/v1.0/openapi3/schemas/Currency.yaml
     type TCurrency = 'AED' | 'AFN' | 'ALL' | 'AMD' | 'ANG' | 'AOA' | 'ARS' | 'AUD' | 'AWG' | 'AZN' | 'BAM' | 'BBD' | 'BDT' | 'BGN' | 'BHD' | 'BIF' | 'BMD' | 'BND' | 'BOB' | 'BRL' | 'BSD' | 'BTN' | 'BWP' | 'BYN' | 'BZD' | 'CAD' | 'CDF' | 'CHF' | 'CLP' | 'CNY' | 'COP' | 'CRC' | 'CUC' | 'CUP' | 'CVE' | 'CZK' | 'DJF' | 'DKK' | 'DOP' | 'DZD' | 'EGP' | 'ERN' | 'ETB' | 'EUR' | 'FJD' | 'FKP' | 'GBP' | 'GEL' | 'GGP' | 'GHS' | 'GIP' | 'GMD' | 'GNF' | 'GTQ' | 'GYD' | 'HKD' | 'HNL' | 'HRK' | 'HTG' | 'HUF' | 'IDR' | 'ILS' | 'IMP' | 'INR' | 'IQD' | 'IRR' | 'ISK' | 'JEP' | 'JMD' | 'JOD' | 'JPY' | 'KES' | 'KGS' | 'KHR' | 'KMF' | 'KPW' | 'KRW' | 'KWD' | 'KYD' | 'KZT' | 'LAK' | 'LBP' | 'LKR' | 'LRD' | 'LSL' | 'LYD' | 'MAD' | 'MDL' | 'MGA' | 'MKD' | 'MMK' | 'MNT' | 'MOP' | 'MRO' | 'MUR' | 'MVR' | 'MWK' | 'MXN' | 'MYR' | 'MZN' | 'NAD' | 'NGN' | 'NIO' | 'NOK' | 'NPR' | 'NZD' | 'OMR' | 'PAB' | 'PEN' | 'PGK' | 'PHP' | 'PKR' | 'PLN' | 'PYG' | 'QAR' | 'RON' | 'RSD' | 'RUB' | 'RWF' | 'SAR' | 'SBD' | 'SCR' | 'SDG' | 'SEK' | 'SGD' | 'SHP' | 'SLL' | 'SOS' | 'SPL' | 'SRD' | 'STD' | 'SVC' | 'SYP' | 'SZL' | 'THB' | 'TJS' | 'TMT' | 'TND' | 'TOP' | 'TRY' | 'TTD' | 'TVD' | 'TWD' | 'TZS' | 'UAH' | 'UGX' | 'USD' | 'UYU' | 'UZS' | 'VEF' | 'VND' | 'VUV' | 'WST' | 'XAF' | 'XCD' | 'XDR' | 'XOF' | 'XPF' | 'YER' | 'ZAR' | 'ZMW' | 'ZWD';
 
-    type TAuthScope = 'accounts.getBalance' | 'accounts.transfer';
-
     type TAuthChannel = 'WEB' | 'OTP';
 
     // Ref: https://github.com/mojaloop/api-snippets/blob/master/v1.0/openapi3/schemas/Party.yaml
@@ -64,7 +62,6 @@ declare namespace SDKStandardComponents {
     type TCredential = {
         id: string | null;
         credentialType: 'FIDO';
-        // TODO: Double check if enum is ACTIVE or VERIFIED.
         status: 'PENDING' | 'ACTIVE';
         challenge: {
             payload: ArrayBuffer;
@@ -74,7 +71,7 @@ declare namespace SDKStandardComponents {
     }
 
     type TCrendentialScope = {
-        scope: TAuthScope;
+        scope: string;
         accountId: string;
     }
 
@@ -128,7 +125,7 @@ declare namespace SDKStandardComponents {
         initiatorId: string;
         accountIds: string[];
         authChannels: TAuthChannel[];
-        scopes: TAuthScope[];
+        scopes: string[];
         callbackUri: string;
         authorizationUri: string;
         authToken: string;
@@ -139,7 +136,7 @@ declare namespace SDKStandardComponents {
         initiatorId: string;
         accountIds: string[];
         authChannels: TAuthChannel[];
-        scopes: TAuthScope[];
+        scopes: string[];
         callbackUri: string;
     }
 
