@@ -64,10 +64,10 @@ declare namespace SDKStandardComponents {
         credentialType: 'FIDO';
         status: 'PENDING' | 'ACTIVE';
         challenge: {
-            payload: ArrayBuffer;
-            signature: ArrayBuffer | null;
+            payload: string;
+            signature: string | null;
         },
-        payload: ArrayBuffer | null;
+        payload: string | null;
     }
 
     type TCrendentialScope = {
